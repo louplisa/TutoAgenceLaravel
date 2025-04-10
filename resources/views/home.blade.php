@@ -1,9 +1,9 @@
 @extends('base')
 
 @section('content')
-    <x-alert type="success" class="fw-bold">
-        Des informations
-    </x-alert>
+{{--    <x-alert type="success" class="fw-bold">--}}
+{{--        Des informations--}}
+{{--    </x-alert>--}}
     <div class="bg-light p-5 mb-5 text-center">
         <div class="container">
             <h1>Agence lorem ipsum</h1>
