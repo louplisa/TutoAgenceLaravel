@@ -39,7 +39,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
         ->name('picture.destroy')
         ->where([
         'picture' => $idRegex,
-    ]);
+    ])->can('delete', 'picture');
 });
 
 Route::get('/dashboard', function () {

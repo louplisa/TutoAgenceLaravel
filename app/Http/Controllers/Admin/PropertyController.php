@@ -7,10 +7,15 @@ use App\Http\Requests\Admin\PropertyFormRequest;
 use App\Models\Option;
 use App\Models\Picture;
 use App\Models\Property;
-use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Property::class, 'property');
+    }
+
     public function index()
     {
        return view('admin.properties.index', [
