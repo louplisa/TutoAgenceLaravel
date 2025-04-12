@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ContactRequestEvent;
 use App\Http\Requests\PropertyContactRequest;
 use App\Http\Requests\SearchPropertiesRequest;
-use App\Jobs\DemoJob;
 use App\Mail\PropertyContactMail;
 use App\Models\Property;
-use App\Models\User;
 use App\Notifications\ContactRequestNotification;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\View\View;
 
 class PropertyController extends Controller
 {
@@ -35,7 +35,7 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function show(string $slug, Property $property)
+    public function show(string $slug, Property $property): RedirectResponse|View
     {
         // DemoJob::dispatch($property)->delay(now()->addSecond(10));
         $expectedSlug = $property->getSlug();
@@ -50,12 +50,12 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function contact(Property $property, PropertyContactRequest $request)
+    public function contact(Property $property, PropertyContactRequest $request): RedirectResponse
     {
 //        event(new ContactRequestEvent($property, $request->validated()));
-        /** @var User $user */
-        $user = User::first();
-        $user->notify(new ContactRequestNotification($property, $request->validated()));
+//        $user = User::first();
+        Notification::route('mail', 'john@admin.fr')->notify(new ContactRequestNotification($property, $request->validated()));
+        Mail::send(new PropertyContactMail($property, $request->validated()));
         return back()->with('success', 'Thanks for contacting us!');
     }
 }
